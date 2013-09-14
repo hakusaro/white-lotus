@@ -31,6 +31,7 @@ end
 
 set :partial_template_engine => :erb
 
+# use Rack::Session::Cookie
 use OmniAuth::Builder do
   provider :open_id, :name => 'steam', 'identifier' => 'http://steamcommunity.com/openid'
 end
