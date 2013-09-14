@@ -47,6 +47,7 @@ GEM
     ruby-openid (2.2.3)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
+    sequel (4.2.0)
     sinatra (1.4.3)
       rack (~> 1.4)
       rack-protection (~> 1.4)
@@ -73,6 +74,7 @@ DEPENDENCIES
   omniauth-steam
   pry
   rerun
+  sequel
   sinatra
   sinatra-partial
   sinatra-session
