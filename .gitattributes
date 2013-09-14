@@ -7,3 +7,5 @@ Gemfile text eol=lf
 LICENSE text eol=lf
 Gemfile.lock text eol=lf
 *.ru text eol=lf
+*.css text eol=lf
+*.txt text eol=lf

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="TShock powered Steam server authentication.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>White Lotus</title>
+
+        <script src="<%= url('js/vendor/custom.modernizr.js') %>"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <link rel="stylesheet" href="<%= url('css/foundation.min.css') %>">
+        <link rel="author" href="humans.txt">
+    </head>
+    <body>
+        <div class="contain-to-grid">
+            <nav class="top-bar">
+              <ul class="title-area">
+                <ul class="left">
+                  <li class="name">
+                    <h1><a href="/">White Lotus</a></h1>
+                  </li>
+                </ul>
+              </ul>
+              <section class="top-bar-section">
+                <ul class="right">
+                  <li class="divider hide-for-small"></li>
+                  <li class="name"><h1><a href="<%= login_state ? "/logout" : "/auth/steam" %>"><%= login_state ? "Logout" : "Login" %></a></h1></li>
+                </ul>
+              </section>
+            </nav>
+        </div>

@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'sinatra/session'
+require 'sinatra/partial'
 require 'omniauth'
 require 'omniauth-openid'
 require 'pry'
