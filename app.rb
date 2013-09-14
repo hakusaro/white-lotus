@@ -24,7 +24,7 @@ else
   set :logging => true,
     :dump_errors => true,
     :raise_errors => true,
-    :session_secret => 'maka_is_not_a_secret',
+    :session_secret => '\]$?=?SndTw%`l\ps&cb P2v|U)Maka4a*o[RW*yH{OH9/LwsdfD',
     :bind => '0.0.0.0',
     :port => 4567
 end
