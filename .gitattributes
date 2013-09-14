@@ -4,3 +4,5 @@ Gemfile text eol=lf
 *.erb text eol=lf
 *.js text eol=lf
 *.md text eol=lf
+LICENSE text eol=lf
+Gemfile.lock text eol=lf
