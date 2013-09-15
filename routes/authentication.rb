@@ -34,6 +34,7 @@ post '/login/stage/3/?' do
 end
 
 get '/login/stage/4/?' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
   all_servers = DB[:servers]
   owned_servers = all_servers.where(:steam64 == session[:steam64])
   if (owned_servers.count == 0) then
