@@ -29,7 +29,17 @@ else
     :session_secret => '\]$?=?SndTw%`l\ps&cb P2v|U)Maka4a*o[RW*yH{OH9/LwsdfD',
     :bind => '0.0.0.0',
     :port => 4567
+
+  temp_config = ""
+  File.open('config.yaml', 'r').each_line do |line|
+    temp_config << line
+  end
+  app_config = YAML.load(temp_config)
+
+  set :db_url => app_config['db_url']
 end
+
+DB = Sequel.connect(settings.db_url)
 
 set :partial_template_engine => :erb
 
@@ -38,3 +48,4 @@ use OmniAuth::Builder do
 end
 
 require_relative 'routes/init'
+require_relative 'models/init'
