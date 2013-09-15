@@ -33,7 +33,17 @@ post '/login/stage/3/?' do
   output
 end
 
-get '/create/server/' do
+get '/login/stage/4/?' do
+  all_servers = DB[:servers]
+  owned_servers = all_servers.where(:steam64 == session[:steam64])
+  if (owned_servers.count == 0) then
+    redirect to('/create/server/')
+  else
+    puts "YOLO" # Placeholder I guess thing.
+  end
+end
+
+get '/create/server/?' do
   redirect to('/login/stage/1/') unless session? && session[:logged_in]
   output = @header
   output << partial(:create_server)
