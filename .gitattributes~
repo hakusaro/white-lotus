@@ -9,4 +9,3 @@ Gemfile.lock text eol=lf
 *.ru text eol=lf
 *.css text eol=lf
 *.txt text eol=lf
-*.cs text eol=crlf
