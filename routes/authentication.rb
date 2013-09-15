@@ -1,14 +1,3 @@
-post '/auth/steam/callback/?' do
-  hash = request.env['omniauth.auth']
-  hash.uid.slice!('http://steamcommunity.com/openid/id/')
-  session[:steam64] = hash.uid
-  redirect to('/login/stage/2/')
-end
-
-get '/login/stage/2/?' do
-
-end
-
 get '/login/stage/1/?' do
   if (session?) then
     session_end!(true)
@@ -17,6 +6,41 @@ get '/login/stage/1/?' do
   session_start!
   session[:logged_in] = false
   redirect to('/auth/steam/')
+end
+
+get '/login/stage/2/?' do
+  output = @header
+  output << partial(:logon_select)
+  output << partial(:footer)
+  output
+end
+
+post '/login/stage/3/?' do
+  # We can't do much here yet...
+  if (params['server_key']) then
+    session[:server_key] = params['server_key']
+  else
+    redirect to('/login/stage/2/')
+  end
+  output = @header
+  output << partial(:generic, :locals => {
+    title: "Success.",
+    heading: "We're not there yet.",
+    body: "Eventually this code will do something. Your server key is #{session[:server_key]}"
+    })
+  output << partial(:footer)
+  output
+end
+
+get '/login/server_owner/' do
+
+end
+
+post '/auth/steam/callback/?' do
+  hash = request.env['omniauth.auth']
+  hash.uid.slice!('http://steamcommunity.com/openid/id/')
+  session[:steam64] = hash.uid
+  redirect to('/login/stage/2/')
 end
 
 get '/logout/?' do

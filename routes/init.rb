@@ -8,3 +8,7 @@ end
 
 require_relative 'index'
 require_relative 'authentication'
+
+if (settings.environment == :development) then
+  require_relative 'debug'
+end
