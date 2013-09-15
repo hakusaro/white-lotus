@@ -1,12 +1,12 @@
-class AddInviteTable < Sequel::Migration
-  def up
+Sequel.migration do
+  up do
     create_table(:invites) do
       primary_key :id
       foreign_key :admin_id, :admins
       String :code
     end
   end
-  def down
+  down do
     drop_table(:invites)
   end
 end

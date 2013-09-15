@@ -5,9 +5,8 @@
 # Example:
 # > sequel -m . -M 1 mysql://root@localhost/white_lotus
 
-class CreateInitialTables < Sequel::Migration
-
-  def up
+Sequel.migration do
+  up do
     create_table(:servers) do
       primary_key :id
       String :steam64
@@ -37,11 +36,9 @@ class CreateInitialTables < Sequel::Migration
       String :steam64
     end
   end
-
-  def down
+  down do
     drop_table(:users)
     drop_table(:admins)
     drop_table(:servers)
   end
-
 end
