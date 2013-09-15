@@ -36,7 +36,7 @@ end
 get '/login/stage/4/?' do
   redirect to('/login/stage/1/') unless session? && session[:logged_in]
   all_servers = DB[:servers]
-  owned_servers = all_servers.where(:steam64 == session[:steam64])
+  owned_servers = all_servers.where(:steam64 => session[:steam64]).all
   if (owned_servers.count == 0) then
     redirect to('/create/server/')
   else
@@ -44,12 +44,24 @@ get '/login/stage/4/?' do
   end
 end
 
-get '/create/server/?' do
+get '/login/admin/?' do
   redirect to('/login/stage/1/') unless session? && session[:logged_in]
+  all_admins = DB[:admins]
+  admins = all_admins.where(:steam64 => session[:steam64]).all
+  if (admins.count == 0) then
+    redirect to('/')
+  else
+    admins.each do |admin|
+      session[:admin_id] = admin[:id]
+      session[:is_admin] = true
+    end
+  end
   output = @header
-  output << partial(:create_server)
-  output << partial(:footer)
-  output
+  output << partial(:generic, :locals => {
+    title: 'Success',
+    heading: 'Admin login complete.',
+    body: 'You are now logged in as an admin.'
+    })
 end
 
 post '/auth/steam/callback/?' do
