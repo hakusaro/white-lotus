@@ -9,6 +9,7 @@ get '/login/stage/1/?' do
 end
 
 get '/login/stage/2/?' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
   output = @header
   output << partial(:logon_select)
   output << partial(:footer)
@@ -32,14 +33,19 @@ post '/login/stage/3/?' do
   output
 end
 
-get '/login/server_owner/' do
-
+get '/create/server/' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
+  output = @header
+  output << partial(:create_server)
+  output << partial(:footer)
+  output
 end
 
 post '/auth/steam/callback/?' do
   hash = request.env['omniauth.auth']
   hash.uid.slice!('http://steamcommunity.com/openid/id/')
   session[:steam64] = hash.uid
+  session[:logged_in] = true
   redirect to('/login/stage/2/')
 end
 

@@ -1,0 +1,69 @@
+<div class="row">
+  <div class="large-12 columns">
+    <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= url('/img/tshock_logo.png') %>" />
+    <h4 style="text-align: center">Server owner? Sweet.</h4>
+    <h6 style="text-align: center" class="subheader">You must have a valid invitation code to enter.</h6>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="large-6 large-centered columns">
+    <form class="custom" method="post" action="<%= url('/login/stage/3/') %>" data-abide novalidate="novalidate">
+      <fieldset>
+        <legend>Create Server</legend>
+        <div class="row collapse">
+          <div class="small-12 columns">
+            <span data-tooltip class="tip-top has-tip" title="A friendly name to be shown to your new users.">
+              <label>Server Name <small>Required</small></label>
+            </span>
+              <input type="text" pattern="alpha_numeric" name="server_name" placeholder="Scythemeister Central" required>
+              <small class="error" data-error-message>A valid server name is required.</small>
+          </div>
+          <div class="small-12 columns">
+            <span data-tooltip class="tip-top has-tip" title="A witty retort to tell your new users!">
+              <label>Welcome Message</label>
+            </span>
+            <input type="text" pattern="alpha_numeric" name="server_description" placeholder="Welcome to my server!">
+          </div>
+          <div class="small-12 columns">
+            <span data-tooltip class="tip-top has-tip" title="Players will type this into the logon screen to join.">
+              <label>Server Key <small>Required</small></label>
+            </span>
+            <input type="text" pattern="alpha_numeric" name="server_key" placeholder="maka-albarn-server" required>
+            <small class="error">A valid server key is required.</small>
+          </div>
+          <div class="small-12 columns">
+            <span data-tooltip class="tip-top has-tip" title="Players will type this into the logon screen to join.">
+              <label>Server Logo URL</label>
+            </span>
+            <input type="text" type="url" name="server_key" pattern="alpha_numeric" placeholder="http://danbooru.donmai.us/data/20c59dda8c0e715b1850b31846a284be.jpg">
+          </div>
+          <div class="small-8 columns">
+            <span data-tooltip class="tip-top has-tip" title="REST must be turned on.<br>Additionally, it should be port forwarded and allowed through firewalls.">
+              <label>REST IP <small>Required</small></label>
+            </span>
+            <input type="text" name="rest_api_ip" pattern="alpha_numeric" placeholder="direct.maka-albarn.net" required>
+            <small class="error">A valid REST IP or hostname is required.</small>
+          </div>
+          <div class="small-4 columns">
+            <span data-tooltip class="tip-top has-tip" title="Your server's REST port. This is different than what players use to join.">
+              <label>REST Port <small>Required</small></label>
+            </span>
+            <input type="text" name="rest_api_port" pattern="number" placeholder="7878" required>
+            <small class="error">A valid REST port is required.</small>
+          </div>
+          <div class="small-12 columns">
+            <span data-tooltip class="tip-top has-tip" title="Your invitation code.">
+              <label>Invite Code <small>Required</small></label>
+            </span>
+            <input type="text" name="server_key" pattern="alpha_numeric" placeholder="x48bcj9" required>
+            <small class="error">You must have an invitation to register an account.</small>
+          </div>
+          <div class="small-12 columns">
+            <button style="margin-left: auto; margin-right: auto; display: block" type="submit" class="button">Create Server</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
