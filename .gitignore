@@ -16,3 +16,7 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+/white-lotus-tshock-plugin/WhiteLotus.v11.suo
+/white-lotus-tshock-plugin/WhiteLotus/bin
+/white-lotus-tshock-plugin/WhiteLotus/obj
