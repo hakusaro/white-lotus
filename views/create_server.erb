@@ -8,7 +8,7 @@
 </div>
 <div class="row">
   <div class="small-6 small-centered columns">
-    <form class="custom" method="post" action="<%= url('/server/create/') %>" data-abide novalidate="novalidate">
+    <form class="custom" method="post" action="<%= url('/create/server/') %>" data-abide novalidate="novalidate">
       <fieldset>
         <legend>Create Server</legend>
         <div class="row collapse">
@@ -23,7 +23,7 @@
             <span data-tooltip class="tip-top has-tip" title="A witty retort to tell your new users!">
               <label>Welcome Message</label>
             </span>
-            <input type="text" pattern="alpha_numeric" name="server_description" placeholder="Welcome to my server!">
+            <input type="text" pattern="alpha_numeric" name="server_welcome" placeholder="Welcome to my server!">
           </div>
           <div class="small-12 columns">
             <span data-tooltip class="tip-top has-tip" title="Players will type this into the logon screen to join.">
@@ -36,7 +36,7 @@
             <span data-tooltip class="tip-top has-tip" title="Players will type this into the logon screen to join.">
               <label>Server Logo URL</label>
             </span>
-            <input type="text" type="url" name="server_key" pattern="alpha_numeric" placeholder="http://danbooru.donmai.us/data/20c59dda8c0e715b1850b31846a284be.jpg">
+            <input type="text" type="url" name="server_img_url" pattern="alpha_numeric" placeholder="http://danbooru.donmai.us/data/20c59dda8c0e715b1850b31846a284be.jpg">
           </div>
           <div class="small-8 columns">
             <span data-tooltip class="tip-top has-tip" title="REST must be turned on.<br>Additionally, it should be port forwarded and allowed through firewalls.">
@@ -56,14 +56,14 @@
             <span data-tooltip class="tip-top has-tip" title="This token must match the token in the plugin's config file.">
               <label>REST Token <small>Required</small></label>
             </span>
-            <input type="text" type="url" name="server_key" pattern="alpha_numeric" placeholder="37DC52531760BBD1428A4BDA3268B384D5076E4F5F41B809A3E4FF2FC77DA98B" required>
+            <input type="text" type="url" name="rest_api_token" pattern="alpha_numeric" placeholder="37DC52531760BBD1428A4BDA3268B384D5076E4F5F41B809A3E4FF2FC77DA98B" required>
             <small class="error">A valid REST token is required.</small>
           </div>
           <div class="small-12 columns">
             <span data-tooltip class="tip-top has-tip" title="Your invitation code.">
               <label>Invite Code <small>Required</small></label>
             </span>
-            <input type="text" name="server_key" pattern="alpha_numeric" placeholder="x48bcj9" required>
+            <input type="text" name="invite_code" pattern="alpha_numeric" placeholder="x48bcj9" required>
             <small class="error">You must have an invitation to register an account.</small>
           </div>
           <div class="small-12 columns">
