@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using HttpServer;
 using Mono.Data.Sqlite;
@@ -52,6 +55,8 @@ namespace WhiteLotus
         {
             userManager = new UserManager(SetupDB());
             
+            TShockAPI.Commands.ChatCommands.Add(new Command("white-lotus", SteamBan, "steamban"));
+
             TShock.RestApi.Register(new SecureRestCommand("/steam/user/add", AddUser, "white-lotus"));
             TShock.RestApi.Register(new SecureRestCommand("/steam/user/get", GetAccountsForSteam64, "white-lotus"));
         }
@@ -147,6 +152,81 @@ namespace WhiteLotus
             }
 
             return new RestObject("200") {{"users", accounts}};
+        }
+
+        private void SteamBan(CommandArgs args)
+        {
+            if (args.Parameters.Count < 1)
+            {
+                args.Player.SendInfoMessage("Usage: /steamban {steamid/steam64/username}");
+                args.Player.SendInfoMessage("       valid steamid takes the form 'STEAM_X:X:X'");
+                return;
+            }
+
+            Match m = Regex.Match(args.Parameters[0], "^STEAM_\\d:(\\d+):(\\d+)$");
+
+            Int64 steamid64 = 0;
+            if (m.Success)
+            {
+                Int32 authid = 0;
+                if (!Int32.TryParse(m.Groups[2].Value, out authid))
+                {
+                    args.Player.SendErrorMessage("Users steamid is not valid: {0}", m.Groups[2].Value);
+                    return;
+                }
+
+                Int32 server = 0;
+                if (!Int32.TryParse(m.Groups[1].Value, out server))
+                {
+                    args.Player.SendErrorMessage("Users steamid is not valid: {0}", m.Groups[1].Value);
+                    return;
+                }
+
+                Int64 stm64 = authid*2;
+                stm64 += 76561197960265728;
+                stm64 += server;
+                steamid64 = stm64;
+            }
+            else
+            {
+                string steamid;
+                try
+                {
+                    steamid = userManager.GetSteamIDForUsername(args.Parameters[0]);
+
+                    if (!Int64.TryParse(steamid, out steamid64))
+                    {
+                        args.Player.SendErrorMessage("Users steam64 is not valid: {0}", steamid);
+                        return;
+                    }
+                }
+                catch (UserException e)
+                {
+                    args.Player.SendErrorMessage("SQL Error: {0}", e.Message);
+                }
+            }
+
+            //do the ban with their wonderful steam64
+            var accounts = new List<SteamUser>();
+            try
+            {
+                accounts = userManager.GetUserAccounts(steamid64.ToString());
+                foreach (var acc in accounts)
+                {
+                    TShock.Bans.AddBan("", acc.UserAccountName, "Steam ban");
+                }
+            }
+            catch (UserException e)
+            {
+                args.Player.SendErrorMessage("SQL Error: {0}", e.Message);
+            }
+
+            //ADD ban on the webend
+            /*using (var cl = new WebClient())
+            {
+                string res = cl.UploadString("whitelotus.tshock.co/api/steam/ban", String.Format("steamid={0}&token={1}", steamid64, "token"));
+                Console.WriteLine(res);
+            }*/
         }
 
         private RestObject RestMissingParam(string var)

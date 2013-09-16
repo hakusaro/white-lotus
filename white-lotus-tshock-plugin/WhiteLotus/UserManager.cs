@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
@@ -67,6 +68,29 @@ namespace WhiteLotus
             }
 
             return accounts;
+        }
+
+        public string GetSteamIDForUsername(string username)
+        {
+            string steamid = "";
+            using (var reader = database.QueryReader("SELECT steam64 FROM users WHERE username = @0", username))
+            {
+                if (reader.Read())
+                {
+                    steamid = reader.Get<String>("steam64");
+                }
+                else
+                {
+                    throw new UserException("User does not exist.");
+                }
+            }
+
+            if (String.IsNullOrWhiteSpace(steamid))
+            {
+                throw new UserException("User has no steamid");
+            }
+
+            return steamid;
         }
 
     }
