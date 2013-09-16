@@ -59,6 +59,8 @@ namespace WhiteLotus
 
             TShock.RestApi.Register(new SecureRestCommand("/steam/user/add", AddUser, "white-lotus"));
             TShock.RestApi.Register(new SecureRestCommand("/steam/user/get", GetAccountsForSteam64, "white-lotus"));
+            TShock.RestApi.Register(new SecureRestCommand("/steam/ban/create", SteamBanCreate, "white-lotus"));
+            TShock.RestApi.Register(new SecureRestCommand("/steam/ban/delete", SteamBanCreate, "white-lotus"));
         }
 
         protected override void Dispose(bool disposing)
@@ -154,6 +156,56 @@ namespace WhiteLotus
             return new RestObject("200") {{"users", accounts}};
         }
 
+        private object SteamBanCreate(RestVerbs verbs, IParameterCollection parameters, SecureRest.TokenData tokenData)
+        {
+            var steamid = parameters["steamid"];
+            var reason = parameters["reason"];
+
+            if (string.IsNullOrWhiteSpace(reason))
+            {
+                reason = "Steam ban";
+            }
+
+            Int64 steamid64 = -1;
+            if (!LookupSteam64FromSteamid(steamid, out steamid64))
+            {
+                return RestError("Invalid steamid.  Valid steamids are STEAM_X:X:X or Steam64 ids.");
+            }
+
+            try
+            {
+                DoBan(steamid64.ToString(), "add", reason);
+            }
+            catch (UserException e)
+            {
+                return RestError(String.Format("SQL Error: {0}", e.Message));
+            }
+
+            return new RestObject("200") { Response = "Successfully banned user" };
+        }
+
+        private object SteamBanDelete(RestVerbs verbs, IParameterCollection parameters, SecureRest.TokenData tokenData)
+        {
+            var steamid = parameters["steamid"];
+
+            Int64 steamid64 = -1;
+            if (!LookupSteam64FromSteamid(steamid, out steamid64))
+            {
+                return RestError("Invalid steamid.  Valid steamids are STEAM_X:X:X or Steam64 ids.");
+            }
+
+            try
+            {
+                DoBan(steamid64.ToString(), "del", "");
+            }
+            catch (UserException e)
+            {
+                return RestError(String.Format("SQL Error: {0}", e.Message));
+            }
+
+            return new RestObject("200") { Response = "Successfully unbanned user" };
+        }
+
         private void SteamBan(CommandArgs args)
         {
             if (args.Parameters.Count < 2)
@@ -188,16 +240,26 @@ namespace WhiteLotus
                 reason = string.Join(" ", args.Parameters, 2, args.Parameters.Count - 2);
             }
 
-            //do the ban with their wonderful steam64
-            var accounts = new List<SteamUser>();
             try
             {
-                accounts = userManager.GetUserAccounts(steamid64.ToString());
-                switch(mode.ToUpper())
-                {
-                    case "ADD":
+                DoBan(steamid64.ToString(), mode, reason);
+            }
+            catch (UserException e)
+            {
+                args.Player.SendErrorMessage("SQL Error: {0}", e.Message);
+            }
+        }
+
+        private void DoBan(string steamid, string reason, string mode)
+        {
+            //do the ban with their wonderful steam64
+            var accounts = new List<SteamUser>();
+            accounts = userManager.GetUserAccounts(steamid);
+            switch (mode.ToUpper())
+            {
+                case "ADD":
                     {
-                        userManager.AddBan(steamid64.ToString());
+                        userManager.AddBan(steamid);
 
                         foreach (var acc in accounts)
                         {
@@ -205,9 +267,9 @@ namespace WhiteLotus
                         }
                         break;
                     }
-                    case "DEL":
+                case "DEL":
                     {
-                        userManager.DelBan(steamid64.ToString());
+                        userManager.DelBan(steamid);
 
                         foreach (var acc in accounts)
                         {
@@ -215,11 +277,6 @@ namespace WhiteLotus
                         }
                         break;
                     }
-                }
-            }
-            catch (UserException e)
-            {
-                args.Player.SendErrorMessage("SQL Error: {0}", e.Message);
             }
 
             //ADD ban on the webend
@@ -230,9 +287,9 @@ namespace WhiteLotus
             }*/
         }
 
-        private bool LookupSteamId(string lookup, out Int64 steamid64)
+        private bool LookupSteam64FromSteamid(string steam64, out Int64 steamid64)
         {
-            Match m = Regex.Match(lookup, "^STEAM_\\d:(\\d+):(\\d+)$");
+            Match m = Regex.Match(steam64, "^STEAM_\\d:(\\d+):(\\d+)$");
 
             steamid64 = -1;
             if (m.Success)
@@ -241,7 +298,7 @@ namespace WhiteLotus
                 Int32 server = 0;
                 if (Int32.TryParse(m.Groups[2].Value, out authid) && Int32.TryParse(m.Groups[1].Value, out server))
                 {
-                    Int64 stm64 = authid*2;
+                    Int64 stm64 = authid * 2;
                     stm64 += 76561197960265728;
                     stm64 += server;
                     steamid64 = stm64;
@@ -250,8 +307,16 @@ namespace WhiteLotus
                 {
                     steamid64 = -1;
                 }
+
+                return true;
             }
-            else
+
+            return false;
+        }
+
+        private bool LookupSteamId(string lookup, out Int64 steamid64)
+        {
+            if (!LookupSteam64FromSteamid(lookup, out steamid64))
             {
                 string steamid = userManager.GetSteamIDForUsername(lookup);
                 if (!Int64.TryParse(steamid, out steamid64))
