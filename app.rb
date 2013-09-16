@@ -38,9 +38,14 @@ else
   app_config = YAML.load(temp_config)
 
   set :db_url => app_config['db_url']
+  set :db_type => app_config['db_type'].to_sym
 end
 
-DB = Sequel.connect(settings.db_url)
+if (settings.db_type == :sqlite) then
+  DB = Sequel.connect(settings.db_url)
+else
+  DB = Sequel.connect(settings.db_url)
+end
 
 set :partial_template_engine => :erb
 
