@@ -17,20 +17,17 @@ get '/login/stage/2/?' do
 end
 
 post '/login/stage/3/?' do
-  # We can't do much here yet...
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
   if (params['server_key']) then
-    session[:server_key] = params['server_key']
+    servers = DB[:servers].where(:server_human_code => params['server_key']).all
+    servers.each do |server|
+      session[:server_id] = server[:id]
+    end
+    redirect to('/login/stage/2/') unless session[:server_id]
   else
     redirect to('/login/stage/2/')
   end
-  output = @header
-  output << partial(:generic, :locals => {
-    title: "Success.",
-    heading: "We're not there yet.",
-    body: "Eventually this code will do something. Your server key is #{session[:server_key]}"
-    })
-  output << partial(:footer)
-  output
+  redirect to('/create/user/')
 end
 
 get '/login/stage/4/?' do
@@ -62,6 +59,8 @@ get '/login/admin/?' do
     heading: 'Admin login complete.',
     body: 'You are now logged in as an admin.'
     })
+  output << partial(:footer)
+  output
 end
 
 post '/auth/steam/callback/?' do

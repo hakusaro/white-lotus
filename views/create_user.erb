@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="small-12 columns">
+    <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= server_img_url %>" />
+    <h4 style="text-align: center"><%= server_name %></h4>
+    <h5 style="text-align: center" class="subheader"><%= server_welcome %></h5>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="small-6 small-centered columns">
+    <form method="post" action="<%= url('/create/user/') %>" data-abide>
+      <fieldset>
+        <div class="row">
+          <div class="small-12 columns">
+            <label>Desired Username <small>Required</small></label>
+            <input type="text" pattern="username" name="username" placeholder="MakaAlbarn" required>
+            <small class="error">A username without spaces is required.</small>
+          </div>
+          <div class="small-12 columns">
+            <label>Desired Password <small>Required</small></label>
+            <input type="password" name="password" required>
+            <small class="error">A password is required.</small>
+          </div>
+          <div class="small-12 columns">
+            <button action="submit" type="submit" class="button prefix">Create Account</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

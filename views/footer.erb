@@ -3,7 +3,13 @@
       </div>
         <script src="/js/vendor/foundation.min.js"></script>
         <script>
-          $(document).foundation();
+          $(document).foundation()
+          .foundation('abide', {
+            patterns: {
+              password: /[a-zA-Z0-9]+/,
+              username: /^[a-zA-Z0-9-_]+$/
+            }
+          });
         </script>
     </body>
 </html>

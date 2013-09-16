@@ -14,6 +14,7 @@ require_relative 'index'
 require_relative 'authentication'
 require_relative 'server'
 require_relative 'admin'
+require_relative 'user'
 
 if (settings.environment == :development) then
   require_relative 'debug'

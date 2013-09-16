@@ -10,6 +10,7 @@ require 'openid/store/filesystem'
 require 'awesome_print'
 require 'yaml'
 require 'sequel'
+require 'rest_client'
 
 if (ENV['environment'] ? ENV['environment'].to_sym : :dev == :production) then
   puts 'Server is running in production mode but nobody put anything different here.'
