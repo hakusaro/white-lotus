@@ -211,6 +211,8 @@ namespace WhiteLotus
             try
             {
                 accounts = userManager.GetUserAccounts(steamid64.ToString());
+                userManager.Ban(steamid64.ToString());
+
                 foreach (var acc in accounts)
                 {
                     TShock.Bans.AddBan("", acc.UserAccountName, "Steam ban");

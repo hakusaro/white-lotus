@@ -93,6 +93,21 @@ namespace WhiteLotus
             return steamid;
         }
 
+        public void Ban(string steamid)
+        {
+            try
+            {
+                if (database.Query("UPDATE users SET banned = @0 WHERE steamid = @1;", 1, steamid) < 1)
+                {
+                    throw new UserException("SteamID not found for any users.");
+                }
+            }
+            catch (Exception e)
+            {
+                throw new UserException("Ban SQL returned an error (" + e.Message + ")", e);
+            }
+        }
+
     }
 
     class SteamUser
