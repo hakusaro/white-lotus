@@ -7,11 +7,13 @@
 </div>
 <div class="row">
   <div class="small-6 small-centered columns">
-    <form method="post" action="<%= url('/login/stage/3/') %>">
+    <form method="post" action="<%= url('/login/stage/3/') %>" data-abide>
       <fieldset>
         <div class="row collapse">
+          <label>Server Key <small>Required</small></label>
           <div class="small-10 columns">
-            <input type="text" name="server_key" placeholder="maka-albarn-server">
+            <input type="text" name="server_key" placeholder="maka-albarn-server" required>
+            <small class="error">You must enter a valid server key in order to register.</small>
           </div>
           <div class="small-2 columns">
             <button action="submit" type="submit" class="button prefix">Join</button>
