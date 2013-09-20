@@ -1,1 +1,2 @@
 db_url: 'mysql://root@localhost/white_lotus'
+db_type: 'mysql'
