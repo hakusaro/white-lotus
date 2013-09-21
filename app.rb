@@ -38,7 +38,7 @@ else
   app_config = YAML.load(temp_config)
 
   set :db_url => app_config['db_url']
-  set :db_type => app_config['db_type'].to_sym
+  set :db_type => app_config['db_type'].to_sym or :mysql
 end
 
 if (settings.db_type == :sqlite) then
