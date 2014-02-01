@@ -44,6 +44,9 @@ end
 get '/login/admin/?' do
   redirect to('/login/stage/1/') unless session? && session[:logged_in]
   all_admins = DB[:admins]
+  if (all_admins.all.count == 0) then
+    Admin.create_admin(session[:steam64])
+  end
   admins = all_admins.where(:steam64 => session[:steam64]).all
   if (admins.count == 0) then
     redirect to('/')

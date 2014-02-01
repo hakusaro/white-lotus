@@ -1,6 +1,11 @@
 before '/*' do
   if (session?) then
     @header = partial(:header, :locals => { login_state: true })
+    if (settings.environment == :development) then
+      puts "---SESSION DEBUG---"
+      ap session
+      puts "---SESSION DEBUG---"
+    end
   else
     @header = partial(:header, :locals => { login_state: false })
   end
