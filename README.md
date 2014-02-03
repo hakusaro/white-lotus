@@ -17,3 +17,10 @@ Terraria ships with no identification system that ties Steam accounts with playe
 * Server owners can register a server and install a plugin to setup.
 * Players who wish to register with a server do so on our website, which will then add the user to that server's database.
 * If a player is banned, that player is flagged as such in our database, which will prevent further registrations under that Steam account.
+
+
+## What Needs To Be Done
+
+* TShock plugin is a pile of junk, needs to be redone following new web end protocol.
+* Web end needs to add more error checks, and handling for errors.
+* Web end and TShock plugin need to be able to communicate via rest.
