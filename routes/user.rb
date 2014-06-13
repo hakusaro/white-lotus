@@ -26,8 +26,8 @@ post '/create/user/?' do
   begin
   response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=default&password=#{params['password']}")
   response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
+  "Success."
   rescue
   "Failure"
   end
-  "Success."
 end
