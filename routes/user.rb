@@ -24,17 +24,18 @@ post '/create/user/?' do
 
   server = Server[:id => session[:server_id]]
   begin
-    response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=default&password=#{params['password']}")
-    if response.code == "200"
-      response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
-      if response2.code == "200"
-        "Success."
-      else
-        "Failed to add steam user to plugin."
-      end
-    else
-      "Failed to add TShock user."
-    end
+    #response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=default&password=#{params['password']}")
+    #if response.code == "200"
+    #  response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
+    #  if response2.code == "200"
+    User.create_user(session[:server_id], params['username'], session[:steam64])
+    #    "Success." # TODO: render the right page thing.
+    #  else
+    #    response2
+    #  end
+    #else
+    #  response
+    #end
   rescue Exception => e
     "Failure - Internal exception: " + e.message
   end
