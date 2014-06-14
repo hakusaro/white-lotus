@@ -15,11 +15,16 @@ before '/admin/*' do
   redirect to('/login/stage/1/') unless session? && session[:logged_in] && session[:is_admin]
 end
 
+before '/ban/*' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in] && session[:is_admin]
+end
+
 require_relative 'index'
 require_relative 'authentication'
 require_relative 'server'
 require_relative 'admin'
 require_relative 'user'
+require_relative 'do_ban'
 
 if (settings.environment == :development) then
   require_relative 'debug'
