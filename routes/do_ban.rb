@@ -10,8 +10,8 @@ get '/ban/?' do
     end
   end
 
-  users = DB[:users].where(Sequel.and(:serverid => params['serverkey']), (:account_name => params['username'])).all
+  users = DB[:users].where(Sequel.and(:server_id => params['serverkey']), (:account_name => params['username'])).all
   if(users.count > 0)
-    DB[:users].where(Sequel.and(:serverid => params['serverkey']), (:account_name => params['username'])).delete
+    DB[:users].where(Sequel.and(:server_id => params['serverkey']), (:account_name => params['username'])).delete
   end
 end
