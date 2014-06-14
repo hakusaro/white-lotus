@@ -29,6 +29,7 @@ post '/create/user/?' do
     #  response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
     #  if response2.code == "200"
     User.create_user(session[:server_id], params['username'], session[:steam64])
+    "Success"
     #    "Success." # TODO: render the right page thing.
     #  else
     #    response2

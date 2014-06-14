@@ -5,7 +5,7 @@ class User < Sequel::Model
     steam64
   )
     User.create(
-        :serverid => serverid,
+        :server_id => serverid,
         :account_name => account_name,
         :steam64 => steam64,
         :banned => false,
