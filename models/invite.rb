@@ -1,5 +1,5 @@
 class Invite < Sequel::Model
-  def create_invite(
+  def self.create_invite(
     admin_id,
     code
   )

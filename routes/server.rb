@@ -44,25 +44,65 @@ post '/create/server/?' do
 
   invites = DB[:invites].where(:code => params["invite_code"]).all
   if (invites.count > 0) then
-    begin
-      Server.create_server(session[:steam64],
-        params["server_key"],
-        params["server_name"],
-        params["server_img_url"],
-        params["server_welcome"],
-        params["rest_api_port"],
-        params["rest_api_ip"],
-        params["rest_api_token"],
-        true,
-        false,
-        true)
-      DB[:invites].where(:code => params["invite_code"]).delete
-    rescue
-      puts "Unexpected error during creation!!!"
-      "Fail!"
+    used_key = DB[:servers].where(:server_human_code => params["server_key"]).all
+    if(used_key.count > 0)
+      "Server key is already used."
+    else
+      begin
+        Server.create_server(session[:steam64],
+          params["server_key"],
+          params["server_name"],
+          params["server_img_url"],
+          params["server_welcome"],
+          params["rest_api_port"],
+          params["rest_api_ip"],
+          params["rest_api_token"],
+          true,
+          false,
+          true)
+        DB[:invites].where(:code => params["invite_code"]).delete
+      rescue
+        puts "Unexpected error during creation!!!"
+        "Fail!"
+      end
+      "Success."
     end
-    "Success."
   else
     "No invitation code!"
+  end
+end
+
+get '/servers' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
+
+  output = @header
+  servers = DB[:servers].where(:steam64 => session[:steam64]).all
+  if servers.count == 0
+    redirect to('/create/server')
+  else
+    output << partial(:server_list, :locals => {
+        server_list: servers
+    })
+  end
+  output << partial(:footer)
+end
+
+get '/modify/server/:serverid' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
+  server = Server[:id => params[:serverid]]
+  if server.steam64 != session[:steam64]
+    "You do not own this server :("
+  else
+    "You own this server, but whoops we dont have this feature implemented."
+  end
+end
+
+get '/view/server/:serverid' do
+  redirect to('/login/stage/1/') unless session? && session[:logged_in]
+  server = Server[:id => params[:serverid]]
+  if server.steam64 != session[:steam64]
+    "You do not own this server :("
+  else
+    "You own this server, but whoops we dont have this feature implemented."
   end
 end

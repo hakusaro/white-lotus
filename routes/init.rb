@@ -24,7 +24,7 @@ require_relative 'authentication'
 require_relative 'server'
 require_relative 'admin'
 require_relative 'user'
-require_relative 'do_ban'
+require_relative 'ban_endpoint'
 
 if (settings.environment == :development) then
   require_relative 'debug'

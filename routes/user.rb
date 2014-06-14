@@ -23,6 +23,10 @@ post '/create/user/?' do
   end
 
   server = Server[:id => session[:server_id]]
+  is_banned = DB[:users].where(:steam64 => session[:steam64], :server_id => server.id, :banned => true).all
+  if is_banned.count > 0
+    return "You are banned from this server."
+  end
   begin
     #response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=default&password=#{params['password']}")
     #if response.code == "200"

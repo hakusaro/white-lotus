@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="small-12 columns">
+    <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= url('/img/tshock_logo.png') %>" />
+    <h4 style="text-align: center">Here are your servers.</h4>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="small-6 small-centered columns">
+    <table>
+      <th>Server Name</th>
+      <th>Server Key</th>
+      <th>Active</th>
+      <th>Edit</th>
+      <th>View</th>
+      <% server_list.each do |server| %>
+        <tr>
+          <td><%= server[:server_name] %></td>
+          <td><%= server[:server_human_code] %></td>
+          <td><%= server[:active] %></td>
+          <td><a href="/modify/server/<%= server[:id] %>">Edit this server.</a></td>
+          <td><a href="/view/server/<%= server[:id] %>">View this server.</a></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
