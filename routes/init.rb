@@ -25,6 +25,7 @@ require_relative 'server'
 require_relative 'admin'
 require_relative 'user'
 require_relative 'ban_endpoint'
+require_relative 'steam'
 
 if (settings.environment == :development) then
   require_relative 'debug'

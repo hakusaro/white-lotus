@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="small-12 columns">
+    <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= url('/img/tshock_logo.png') %>" />
+    <h4 style="text-align: center">Here is a list of all banned Steam ID's with the number of unique servers banning them.</h4>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="small-3 small-centered columns">
+    <table>
+      <th>Steam ID</th>
+      <th>Server Count</th>
+      <% ban_list.each do |ban| %>
+        <tr>
+          <td><%= ban[:steam64] %></td>
+          <td><%= ban[:count] %></td>
+        </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
