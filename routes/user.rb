@@ -27,21 +27,26 @@ post '/create/user/?' do
   if is_banned.count > 0
     return "You are banned from this server."
   end
+
+  existing_user = DB[:users].where(:steam64 => session[:steam64], :server_id => server.id).all
+  if existing_user.count > 0 && server.allow_multiple_accounts
+    return "You have already created an account on this server: " + existing_user[0][:account_name]
+  end
   begin
-    #response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=default&password=#{params['password']}")
+    #response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=#{server.default_group}&password=#{params['password']}")
     #if response.code == "200"
     #  response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
     #  if response2.code == "200"
     User.create_user(session[:server_id], params['username'], session[:steam64])
-    "Success"
-    #    "Success." # TODO: render the right page thing.
+    return [200, "Success"]
+    ##    "Success." # TODO: render the right page thing.
     #  else
-    #    response2
+    #    return response2, 500
     #  end
     #else
-    #  response
+    #  return response, 500
     #end
   rescue Exception => e
-    "Failure - Internal exception: " + e.message
+    return [500, "Failure - Internal exception: "]
   end
 end

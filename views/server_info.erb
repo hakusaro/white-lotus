@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="small-12 columns">
+    <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= url('/img/tshock_logo.png') %>" />
+    <h4 style="text-align: center">Server info for <%= server[:server_name] %> (<%= server[:server_human_code] %>)</h4>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="small-6 small-centered columns">
+    <table>
+      <th>User Account</th>
+      <th>Steam Id</th>
+      <th>Banned</th>
+      <th>Created</th>
+      <th>Ban/Unban</th>
+      <% user_list.each do |user| %>
+          <tr>
+            <td><%= user[:account_name] %></td>
+            <td><a href="http://steamcommunity.com/profiles/<%= user[:steam64] %>"><%= user[:steam64] %></a></td>
+            <td><%= user[:banned] ? "Yes" : "No" %></td>
+            <td><%= Time.at(Integer(user[:created])).strftime("%m/%d/%Y %I:%M:%p") %></td>
+            <td>
+              <% if user[:banned] == true %>
+                <form action="/ban/delete/<%= user[:steam64] %>/<%= server[:id] %>/<%= server[:rest_token] %>" method="GET">
+                  <button type="submit" class="button prefix">Unban user</button>
+                </form>
+              <% else %>
+                  <form action="/ban/create/<%= user[:steam64] %>/<%= server[:id] %>/<%= server[:rest_token] %>" method="GET">
+                    <button type="submit" class="button prefix">Ban user</button>
+                  </form>
+              <% end %>
+            </td>
+          </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
