@@ -1,4 +1,4 @@
-get '/ban/create/:steam/:serverkey/:token' do
+get 'api/ban/create/:steam/:serverkey/:token' do
   server = Server[:id => params[:serverkey]]
   if server == nil
     return [500, "Server does not exist"]
@@ -17,7 +17,7 @@ get '/ban/create/:steam/:serverkey/:token' do
   end
 end
 
-get '/ban/delete/:steam/:serverkey/:token' do
+get 'api/ban/delete/:steam/:serverkey/:token' do
   server = Server[:id => params[:serverkey]]
   if server == nil
     return [500, "Server does not exist"]
@@ -36,7 +36,7 @@ get '/ban/delete/:steam/:serverkey/:token' do
   end
 end
 
-get '/user/lookup/:steamid/:serverkey/:token' do
+get 'api/user/lookup/:steamid/:serverkey/:token' do
   server = Server[:id => params[:serverkey]]
   if server == nil
     return [500, "Server does not exist"]

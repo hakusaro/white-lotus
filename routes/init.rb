@@ -1,4 +1,4 @@
-before /^(?!\/(ban))/ do
+before /^(?!\/(api))/ do
   if (session?) then
     @header = partial(:header, :locals => { login_state: true })
     if (settings.environment == :development) then
@@ -20,12 +20,9 @@ require_relative 'authentication'
 require_relative 'server'
 require_relative 'admin'
 require_relative 'user'
-<<<<<<< Updated upstream
-require_relative 'ban_endpoint'
 require_relative 'steam'
-=======
 require_relative 'api_endpoint'
->>>>>>> Stashed changes
+require_relative 'internal_api'
 
 if (settings.environment == :development) then
   require_relative 'debug'

@@ -21,11 +21,11 @@
             <td><%= Time.at(Integer(user[:created])).strftime("%m/%d/%Y %I:%M:%p") %></td>
             <td>
               <% if user[:banned] == true %>
-                <form action="/ban/delete/<%= user[:steam64] %>/<%= server[:id] %>/<%= server[:rest_token] %>" method="GET">
+                <form action="/ban/delete/<%= user[:steam64] %>/<%= server[:id] %>" method="GET">
                   <button type="submit" class="button prefix">Unban user</button>
                 </form>
               <% else %>
-                  <form action="/ban/create/<%= user[:steam64] %>/<%= server[:id] %>/<%= server[:rest_token] %>" method="GET">
+                  <form action="/ban/create/<%= user[:steam64] %>/<%= server[:id] %>" method="GET">
                     <button type="submit" class="button prefix">Ban user</button>
                   </form>
               <% end %>
@@ -33,5 +33,7 @@
           </tr>
       <% end %>
     </table>
+    <br /><br />
+    <a href="/servers">Return to the server listing.</a>
   </div>
 </div>

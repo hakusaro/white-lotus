@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="small-12 columns">
+    <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= url('/img/tshock_logo.png') %>" />
+    <h4 style="text-align: center"><%= topic %></h4>
+  </div>
+  <hr />
+</div>
+<div class="row">
+  <div class="small-3 small-centered columns">
+    <%= message %><br /><br />
+    <% if redirect %>
+    <a href="<%= redirect_url %>"><%= redirect_message %></a>
+    <% end %>
+  </div>
+</div>
