@@ -1,15 +1,23 @@
 <div class="row">
   <div class="small-12 columns">
     <img style="margin-left: auto; margin-right: auto; display: block;" src="<%= url('/img/tshock_logo.png') %>" />
-    <h4 style="text-align: center">To begin, sign in.</h4>
+    <% if !login_state %>
+      <h4 style="text-align: center">To begin, sign in.</h4>
+    <% end %>
   </div>
   <hr />
 </div>
 <div class="row panel">
-  <div class="small-12 columns">
-    <p style="text-align: center">White Lotus allows servers to connect users to their Steam accounts.</p>
-    <p style="text-align: center"><strong>If you were sent here by a server, press the login button below to create a TShock account and play.</strong></p>
-  </div>
+  <% if login_state %>
+      <div class="small-12 columns">
+        <p style="text-align: center">Welcome back!</p>
+      </div>
+  <% else %>
+      <div class="small-12 columns">
+        <p style="text-align: center">White Lotus allows servers to connect users to their Steam accounts.</p>
+        <p style="text-align: center"><strong>If you were sent here by a server, press the login button below to create a TShock account and play.</strong></p>
+      </div>
+  <% end %>
 </div>
 <div class="row">
   <div class="small-12 columns">
