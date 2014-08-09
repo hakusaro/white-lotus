@@ -24,3 +24,4 @@ Terraria ships with no identification system that ties Steam accounts with playe
 * TShock plugin is a pile of junk, needs to be redone following new web end protocol.
 * Web end needs to add more error checks, and handling for errors.
 * Web end and TShock plugin need to be able to communicate via rest.
+  test
