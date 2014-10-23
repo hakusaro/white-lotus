@@ -9,10 +9,11 @@ namespace white_lotus
 {
 	class Config
 	{
-		public string RestToken { get; set; }
-		public string ServerId { get; set; }
-		public int GlobalBansTriggerCount { get; set; }
-		public bool NotifyGlobalBans { get; set; }
+		public string RestToken = "";
+		public string ServerId = "";
+		public int GlobalBansTriggerCount = 0;
+		public bool NotifyGlobalBans = false;
+		public string WhiteLotusAddress = "http://whitelotus.nyxstudios.moe";
 
 		public void Write(string path)
 		{

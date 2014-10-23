@@ -263,9 +263,9 @@ namespace WhiteLotus
             	                             			var client =
             	                             				(HttpWebRequest)
             	                             				WebRequest.Create(
-            	                             					String.Format("http://162.243.89.83:4567/ban/{0}/{1}/{2}/{3}",
+            	                             					String.Format("{4}/ban/{0}/{1}/{2}/{3}",
             	                             					              action, steamid64.ToString(), Config.ServerId,
-            	                             					              Config.RestToken));
+            	                             					              Config.RestToken, Config.WhiteLotusAddress));
             	                             			client.Timeout = 5000;
             	                             			try
             	                             			{
@@ -299,8 +299,8 @@ namespace WhiteLotus
 					steamid = userManager.GetSteamIDForUsername(args.Player.UserAccountName);
 					using (var cl = new WebClient())
 					{
-						var uri = String.Format("http://162.243.89.83:4567/user/lookup/{0}/{1}/{2}", steamid, Config.ServerId,
-						                        Config.RestToken);
+						var uri = String.Format("{3}/user/lookup/{0}/{1}/{2}", steamid, Config.ServerId,
+						                        Config.RestToken, Config.WhiteLotusAddress);
 						var client = (HttpWebRequest)WebRequest.Create(uri);
 						client.Timeout = 5000;
 						try
