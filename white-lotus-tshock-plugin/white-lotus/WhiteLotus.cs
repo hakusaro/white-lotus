@@ -117,10 +117,10 @@ namespace WhiteLotus
             return db;
         }
 
-        private object AddUser(RestVerbs verbs, IParameterCollection parameters, SecureRest.TokenData tokenData)
+        private object AddUser(RestRequestArgs args)
         {
-            string steamid = parameters["steamid"];
-            string accountname = parameters["username"];
+            string steamid = args.Parameters["steamid"];
+			string accountname = args.Parameters["username"];
 
             if (string.IsNullOrWhiteSpace(steamid))
             {
@@ -144,9 +144,9 @@ namespace WhiteLotus
             return new RestObject("200"){Response = "Successfully added user"};
         }
 
-        private object GetAccountsForSteam64(RestVerbs verbs, IParameterCollection parameters, SecureRest.TokenData tokenData)
+        private object GetAccountsForSteam64(RestRequestArgs args)
         {
-            string steamid = parameters["steamid"];
+			string steamid = args.Parameters["steamid"];
 
             if (string.IsNullOrWhiteSpace(steamid))
             {
@@ -166,10 +166,15 @@ namespace WhiteLotus
             return new RestObject("200") {{"users", accounts}};
         }
 
-        private object SteamBanCreate(RestVerbs verbs, IParameterCollection parameters, SecureRest.TokenData tokenData)
+        private object SteamBanCreate(RestRequestArgs args)
         {
-            var steamid = parameters["steamid"];
-            var reason = parameters["reason"];
+			var steamid = args.Parameters["steamid"];
+			var reason = args.Parameters["reason"];
+
+			if (string.IsNullOrWhiteSpace(steamid))
+			{
+				return RestMissingParam("steamid");
+			}
 
             if (string.IsNullOrWhiteSpace(reason))
             {
@@ -194,9 +199,14 @@ namespace WhiteLotus
             return new RestObject("200") { Response = "Successfully banned user" };
         }
 
-        private object SteamBanDelete(RestVerbs verbs, IParameterCollection parameters, SecureRest.TokenData tokenData)
+        private object SteamBanDelete(RestRequestArgs args)
         {
-            var steamid = parameters["steamid"];
+			var steamid = args.Parameters["steamid"];
+
+			if (string.IsNullOrWhiteSpace(steamid))
+			{
+				return RestMissingParam("steamid");
+			}
 
             Int64 steamid64 = -1;
             if (!LookupSteam64FromSteamid(steamid, out steamid64))
