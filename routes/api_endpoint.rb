@@ -1,4 +1,4 @@
-get 'api/ban/create/:steam/:serverkey/:token' do
+get '/api/ban/create/:steam/:serverkey/:token/?' do
   server = Server[:id => params[:serverkey]]
   if server == nil
     return [500, "Server does not exist"]
@@ -17,7 +17,7 @@ get 'api/ban/create/:steam/:serverkey/:token' do
   end
 end
 
-get 'api/ban/delete/:steam/:serverkey/:token' do
+get '/api/ban/delete/:steam/:serverkey/:token/?' do
   server = Server[:id => params[:serverkey]]
   if server == nil
     return [500, "Server does not exist"]
@@ -36,7 +36,7 @@ get 'api/ban/delete/:steam/:serverkey/:token' do
   end
 end
 
-get 'api/user/lookup/:steamid/:serverkey/:token' do
+get '/api/user/lookup/:steamid/:serverkey/:token/?' do
   server = Server[:id => params[:serverkey]]
   if server == nil
     return [500, "Server does not exist"]
@@ -48,7 +48,8 @@ get 'api/user/lookup/:steamid/:serverkey/:token' do
 
   users = DB[:users].where(:steam64 => params[:steamid], :banned => true).all
   count = users.uniq{|u| u[:server_id]}
-  resp = "{\"GlobalBans\": " + count.count.to_s + "}"
+  is_banned = DB[:users].where(:steam64 => params[:steamid], :server_id => params[:serverkey], :banned => true).all.count > 0
+  resp = "{\"GlobalBans\": " + count.count.to_s + ", \"IsBanned\": " + is_banned.to_s + "}"
   print resp
   return [200, resp]
 end

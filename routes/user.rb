@@ -1,3 +1,5 @@
+require 'json'
+
 get '/create/user/?' do
   redirect to('/login/stage/1/') unless session? && session[:logged_in] && session[:server_id]
   server = Server[:id => session[:server_id]]
@@ -33,20 +35,28 @@ post '/create/user/?' do
     return "You have already created an account on this server: " + existing_user[0][:account_name]
   end
   begin
-    #response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=#{server.default_group}&password=#{params['password']}")
-    #if response.code == "200"
-    #  response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
-    #  if response2.code == "200"
-    User.create_user(session[:server_id], params['username'], session[:steam64])
-    return [200, "Success"]
-    ##    "Success." # TODO: render the right page thing.
-    #  else
-    #    return response2, 500
-    #  end
-    #else
-    #  return response, 500
-    #end
+    puts "making first request"
+    response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=#{server.default_group}&password=#{params['password']}")
+    puts "completed first request"
+    resp = JSON.parse(response.to_s)
+    if resp['status'] == "200"
+      puts "making second request"
+      response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
+      puts "completed second request"
+      resp = JSON.parse(response2.to_s)
+      if resp['status'] == "200"
+        User.create_user(session[:server_id], params['username'], session[:steam64])
+        return [200, "Success"]
+        "Success." # TODO: render the right page thing.
+      else
+        puts response2.to_s
+        return [500, "Failed to create a Steam user at remote location"]
+      end
+    else
+      puts response.to_s
+      return [500, "Failed to create a TShock user at remote location"]
+    end
   rescue Exception => e
-    return [500, "Failure - Internal exception: "]
+    return [500, "Failure - Internal exception: " + e.to_s]
   end
 end

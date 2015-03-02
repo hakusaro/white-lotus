@@ -21,7 +21,7 @@ using white_lotus;
 
 namespace WhiteLotus
 {
-    [ApiVersion(1, 16)]
+    [ApiVersion(1, 17)]
     public class WhiteLotus : TerrariaPlugin
     {
         private UserManager userManager;
@@ -273,10 +273,10 @@ namespace WhiteLotus
             	                             			var client =
             	                             				(HttpWebRequest)
             	                             				WebRequest.Create(
-            	                             					String.Format("{4}/ban/{0}/{1}/{2}/{3}",
+            	                             					String.Format("{4}/api/ban/{0}/{1}/{2}/{3}",
             	                             					              action, steamid64.ToString(), Config.ServerId,
             	                             					              Config.RestToken, Config.WhiteLotusAddress));
-            	                             			client.Timeout = 5000;
+            	                             			client.Timeout = 60000;
             	                             			try
             	                             			{
             	                             				using (var resp = GetResponseNoException(client))
@@ -309,10 +309,10 @@ namespace WhiteLotus
 					steamid = userManager.GetSteamIDForUsername(args.Player.UserAccountName);
 					using (var cl = new WebClient())
 					{
-						var uri = String.Format("{3}/user/lookup/{0}/{1}/{2}", steamid, Config.ServerId,
+						var uri = String.Format("{3}/api/user/lookup/{0}/{1}/{2}", steamid, Config.ServerId,
 						                        Config.RestToken, Config.WhiteLotusAddress);
 						var client = (HttpWebRequest)WebRequest.Create(uri);
-						client.Timeout = 5000;
+						client.Timeout = 60000;
 						try
 						{
 							using (var resp = GetResponseNoException(client))
@@ -326,11 +326,18 @@ namespace WhiteLotus
 								{
 									var text = reader.ReadToEnd();
 									var obj = JsonConvert.DeserializeObject<UserInfo>(text);
+									if (obj.IsBanned)
+									{
+										TShock.Utils.Kick(args.Player, "White Lotus Ban", true, true, "WhiteLotus", false);
+										return;
+									}
+
 									if (Config.GlobalBansTriggerCount > 0 && obj.GlobalBans >= Config.GlobalBansTriggerCount)
 									{
 										DoBan(steamid, "Global auto ban", "add");
 									}
-									else if(Config.NotifyGlobalBans)
+									
+									if(Config.NotifyGlobalBans)
 									{
 										foreach(var ply in TShock.Players.ToList().Where(p=>p != null && p.IsLoggedIn && p.Group.HasPermission("white-lotus")))
 										{
@@ -457,5 +464,6 @@ namespace WhiteLotus
 	class UserInfo
 	{
 		public int GlobalBans { get; set; }
+		public bool IsBanned { get; set; }
 	}
 }

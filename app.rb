@@ -12,12 +12,14 @@ require 'yaml'
 require 'sequel'
 require 'rest_client'
 
-if (ENV['environment'] ? ENV['environment'].to_sym : :dev == :production) then
-  puts 'Server is running in production mode but nobody put anything different here.'
-  set :environment => :production
-else
-  set :environment => :development
-end
+#if (ENV['environment'] ? ENV['environment'].to_sym : 'dev' == 'production') then
+#  puts 'Server is running in production mode but nobody put anything different here.'
+#  set :environment => :production
+#else
+#  set :environment => :development
+#end
+
+set :environment => :development
 
 if (settings.environment == :production) then
   set :logging => false,
