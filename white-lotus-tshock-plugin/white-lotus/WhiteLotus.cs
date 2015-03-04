@@ -63,6 +63,7 @@ namespace WhiteLotus
 
             TShock.RestApi.Register(new SecureRestCommand("/steam/user/add", AddUser, "white-lotus"));
             TShock.RestApi.Register(new SecureRestCommand("/steam/user/get", GetAccountsForSteam64, "white-lotus"));
+			TShock.RestApi.Register(new SecureRestCommand("/steam/user/delete", DeleteUser, "white-lotus"));
             TShock.RestApi.Register(new SecureRestCommand("/steam/ban/create", SteamBanCreate, "white-lotus"));
             TShock.RestApi.Register(new SecureRestCommand("/steam/ban/delete", SteamBanDelete, "white-lotus"));
         	TShockAPI.Hooks.PlayerHooks.PlayerPostLogin += LookUpUser;
@@ -165,6 +166,28 @@ namespace WhiteLotus
 
             return new RestObject("200") {{"users", accounts}};
         }
+
+	    private object DeleteUser(RestRequestArgs args)
+	    {
+			string accountname = args.Parameters["username"];
+			if (string.IsNullOrWhiteSpace(accountname))
+			{
+				return RestMissingParam("accountname");
+			}
+
+			try
+			{
+				userManager.DeleteUser(accountname);
+			}
+			catch (UserException e)
+			{
+				return RestError(e.Message);
+			}
+
+			TShock.Users.RemoveUser(new User {Name = accountname});
+
+			return new RestObject("200") { Response = "Successfully added user" };
+	    }
 
         private object SteamBanCreate(RestRequestArgs args)
         {

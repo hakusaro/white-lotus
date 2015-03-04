@@ -35,14 +35,10 @@ post '/create/user/?' do
     return "You have already created an account on this server: " + existing_user[0][:account_name]
   end
   begin
-    puts "making first request"
     response = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/v2/users/create?token=#{server.rest_token}&user=#{params['username']}&group=#{server.default_group}&password=#{params['password']}")
-    puts "completed first request"
     resp = JSON.parse(response.to_s)
     if resp['status'] == "200"
-      puts "making second request"
       response2 = RestClient.get("http://#{server.rest_api_ip}:#{server.rest_api_port}/steam/user/add?token=#{server.rest_token}&username=#{params['username']}&steamid=#{session[:steam64]}")
-      puts "completed second request"
       resp = JSON.parse(response2.to_s)
       if resp['status'] == "200"
         User.create_user(session[:server_id], params['username'], session[:steam64])

@@ -23,3 +23,7 @@ doc/
 
 *Thumbs.db
 config.yaml
+/white-lotus-tshock-plugin/packages
+/.idea
+/white-lotus-tshock-plugin/white-lotus/bin
+/white-lotus-tshock-plugin/white-lotus/obj

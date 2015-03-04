@@ -52,6 +52,22 @@ namespace WhiteLotus
             }
         }
 
+		public void DeleteUser(string accountname)
+		{
+			try
+			{
+				if (
+					database.Query("DELETE FROM users WHERE username = {0};", accountname) != 1)
+				{
+					throw new UserException(string.Format("User {0} does not exist.", accountname));
+				}
+			}
+			catch (Exception e)
+			{
+				throw new UserException("DeleteUser SQL returned an error (" + e.Message + ")", e);
+			}
+		}
+
         public List<SteamUser> GetUserAccounts(string steam64)
         {
             List<SteamUser> accounts = new List<SteamUser>();
