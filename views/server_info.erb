@@ -13,6 +13,7 @@
       <th>Banned</th>
       <th>Created</th>
       <th>Ban/Unban</th>
+      <th>DElete User</th>
       <% user_list.each do |user| %>
           <tr>
             <td><%= user[:account_name] %></td>
@@ -29,6 +30,11 @@
                     <button type="submit" class="button prefix">Ban user</button>
                   </form>
               <% end %>
+            </td>
+            <td>
+              <form action="/user/delete/<%= user[:account_name] %>/<%= server[:id] %>" method="GET">
+                <button type="submit" class="button prefix">Delete user</button>
+              </form>
             </td>
           </tr>
       <% end %>
