@@ -51,7 +51,7 @@ GEM
     ruby-openid (2.3.0)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
-    sequel (4.2.0)
+    sequel (5.21.0)
     sinatra (1.4.3)
       rack (~> 1.4)
       rack-protection (~> 1.4)
