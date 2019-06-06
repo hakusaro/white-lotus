@@ -17,7 +17,7 @@ GEM
       rb-kqueue (>= 0.2)
     method_source (0.8.2)
     mime-types (2.99.3)
-    multi_json (1.8.0)
+    multi_json (1.13.1)
     mysqlplus (0.1.2)
     netrc (0.11.0)
     oa-core (0.3.2)
@@ -31,7 +31,7 @@ GEM
     omniauth-openid (1.0.1)
       omniauth (~> 1.0)
       rack-openid (~> 1.3.1)
-    omniauth-steam (1.0.3)
+    omniauth-steam (1.0.6)
       multi_json
       omniauth-openid
     pry (0.9.12.2)
@@ -55,7 +55,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    ruby-openid (2.3.0)
+    ruby-openid (2.7.0)
     ruby-openid-apps-discovery (1.2.0)
       ruby-openid (>= 2.1.7)
     sequel (4.2.0)
