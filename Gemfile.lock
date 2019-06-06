@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.1.0)
-    coderay (1.0.9)
+    coderay (1.1.2)
     daemons (1.3.1)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
@@ -15,7 +15,7 @@ GEM
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
       rb-kqueue (>= 0.2)
-    method_source (0.8.2)
+    method_source (0.9.2)
     mime-types (2.99.3)
     multi_json (1.13.1)
     mysqlplus (0.1.2)
@@ -34,10 +34,9 @@ GEM
     omniauth-steam (1.0.6)
       multi_json
       omniauth-openid
-    pry (0.9.12.2)
-      coderay (~> 1.0.5)
-      method_source (~> 0.8)
-      slop (~> 3.4)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     rack (1.6.11)
     rack-openid (1.3.1)
       rack (>= 1.1.0)
@@ -67,7 +66,6 @@ GEM
       sinatra
     sinatra-session (1.0.0)
       sinatra (>= 1.0)
-    slop (3.4.6)
     sqlite3 (1.3.8)
     thin (1.7.2)
       daemons (~> 1.0, >= 1.0.9)
